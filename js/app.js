@@ -39,11 +39,7 @@ define(['angular','router', 'oclazyload'],function() {
                 controller:"appCtrl",
                 resolve: {
                     deps:["$ocLazyLoad",function($ocLazyLoad){
-                        return $ocLazyLoad.load("aaa").then(
-                            function(){
-                                return $ocLazyLoad.load('js/controller/login/appCtrl.js');
-                            }
-                        );
+                        return $ocLazyLoad.load('js/controller/login/appCtrl.js');
                     }]
                 }
             });
