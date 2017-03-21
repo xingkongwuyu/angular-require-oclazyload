@@ -11,25 +11,20 @@ define(['angular','router', 'oclazyload'],function() {
             service: $provide.service
         };
     })
-    app.constant("Modules_Config",[
-        {
-            name:"ngTable",
-            module:true,
-            files:[
-                "css/login.css"
-            ]
-        }
-    ])
-    app.config(['$ocLazyLoadProvider','$stateProvider','$urlRouterProvider',function($ocLazyLoadProvider,$stateProvider, $urlRouterProvider){
+    app.config(["$ocLazyLoadProvider",function ($ocLazyLoadProvider) {
         $ocLazyLoadProvider.config({
             loadedModules: ['qiyepeixun'],
-            jsLoader: require,
-            modules:[ {
-                name: 'aaa',
-                module:true,
-                files: ['css/login.css']
+            asyncLoader: require,
+            'debug': true, // For debugging 'true/false'
+            'events': true,
+            modules:[{
+                name:'bbb',
+                files:['js/controller/login/bbb.js']
             }]
         })
+    }])
+
+    app.config(['$stateProvider','$urlRouterProvider',function($stateProvider, $urlRouterProvider){
 
         $urlRouterProvider.otherwise("/index");
         $stateProvider
@@ -39,7 +34,10 @@ define(['angular','router', 'oclazyload'],function() {
                 controller:"appCtrl",
                 resolve: {
                     deps:["$ocLazyLoad",function($ocLazyLoad){
-                        return $ocLazyLoad.load('js/controller/login/appCtrl.js');
+                            return $ocLazyLoad.load('bbb').then(function () {
+                                return $ocLazyLoad.load('js/controller/login/appCtrl.js');
+                            })
+
                     }]
                 }
             });
